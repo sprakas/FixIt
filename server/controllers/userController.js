@@ -1,4 +1,4 @@
 const user = () => {
     return 'surya'
 }
-module.exports = user;
+module.exports = user ;

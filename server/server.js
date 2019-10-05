@@ -5,14 +5,20 @@ const app = express();
 const mongoose = require('mongoose');
 const cors = require('cors')
 const userRouter = require('./routes/userRoute')
+const jwt = require('jsonwebtoken');
+const User = require('./modals/usersModal')
+const validate = require('./modals/usersModal')
 // app.use(express.static(path.join(__dirname, 'public')));
 
 
-const uri = "mongodb+srv://Surya:Surya@123@cluster0-rng2v.mongodb.net/test?retryWrites=true&w=majority"
-app.use('/user',userRouter)
+const uri = "mongodb+srv://Surya:Surya@123@cluster0-rng2v.mongodb.net/fixit?retryWrites=true&w=majority"
 app.use(cors())
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use('/',userRouter)
+
+
+
 
 app.get('/ping', function (req, res) {
   res.send([{ "name": "surya", "age": 20 }, { "name": "anand", "age": 19 }])
