@@ -8,15 +8,26 @@ const UserModal = require('../modals/usersModal')
 router.get('/', function(req,res){
     res.send(userController.user)
 })
-router.get("/login",async(req,res)=>{
-    let payload={
-        email:"eswar@email.com",
-        password: "password"
+router.get('/dashboard', auth , async(req,res)=> {
+  res.send('hello world')
+})
+router.post("/login",async(req,res)=>{
+    let { email, password } = req.body;
+    if(!email || !password) {
+      return res.status(400).json({message: 'please enter all the fields'})
     }
+    let user = await UserModal.User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({message: 'User Does not exists!'})
+    }
+    const token = jwt.sign({ _id : user._doc._id},'secret');
+    res.header("x-auth-token", token).send({
+      _id: user._doc._id,
+      name: user._doc.name,
+      email: user._doc.email,
+      token : token
+    });
 
-    let token = await jwt.sign(payload,Jwt_token,{
-        expiresIn : "6000"
-    })
 })
 router.post("/register", async (req, res) => {
     const { error } = UserModal.validateUser(req.body);
