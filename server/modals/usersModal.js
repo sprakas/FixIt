@@ -1,8 +1,8 @@
 const jwt = require('jsonwebtoken');
 const Joi = require('joi');
 const mongoose = require('mongoose');
+const Bcrypt = require('bcryptjs');
 
-//simple schema
 const UserSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -22,29 +22,33 @@ const UserSchema = new mongoose.Schema({
     required: true,
     minlength: 3,
     maxlength: 255
-  },
-  isAdmin: String
+  }
 });
 
 //custom method to generate authToken 
-UserSchema.methods.generateAuthToken = function() { 
-    const token = jwt.sign({ _id: this._id, isAdmin: this.isAdmin },'secret');
-    console.log(token)
-    return token;
-  }
-  
-const User = mongoose.model('users', UserSchema);
-  
-  //function to validate user 
-function validateUser(user) {
-    const schema = {
-      name: Joi.string().min(3).max(50).required(),
-      email: Joi.string().min(5).max(255).required().email(),
-      password: Joi.string().min(3).max(255).required(),
-      isAdmin : Joi.string()
-    };
-  
-    return Joi.validate(user, schema);
+UserSchema.methods.generateAuthToken = function () {
+  const token = jwt.sign({ _id: this._id}, 'secret');
+  return token;
 }
-module.exports = {User,validateUser}
+
+UserSchema.pre("save", function (next) {
+  if (!this.isModified("password")) {
+    return next();
+  }
+  this.password = Bcrypt.hashSync(this.password, 11);
+  next();
+});
+
+const User = mongoose.model('users', UserSchema);
+
+function validateUser(user) {
+  const schema = {
+    name: Joi.string().min(3).max(50).required(),
+    email: Joi.string().min(5).max(255).required().email(),
+    password: Joi.string().min(3).max(255).required(),
+  };
+
+  return Joi.validate(user, schema);
+}
+module.exports = { User, validateUser }
 

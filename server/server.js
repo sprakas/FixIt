@@ -36,3 +36,6 @@ mongoose
   })
   .catch(err => console.log(err));
 
+app.use((error,req,res,next)=>{
+  if(error) res.send({"message": error.message})
+})

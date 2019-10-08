@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
-import { withRouter } from 'react-router-dom'
+import { withRouter, Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { userLogin, userLogout } from '../actions/authAction'
+import { TextInput } from 'react-materialize'
 class Login extends Component {
     constructor(props) {
         super(props)
@@ -30,16 +31,20 @@ class Login extends Component {
             .then((response) => response.json())
             .then((response) => {
                 if (response.token) {
+                    this.setState({
+                        userData: {}
+                    })
                     localStorage.setItem('token', response.token)
                     this.props.userLogin()
                     this.dashboard()
-                    console.log(localStorage.getItem('token'))
                 }
                 else {
-                    alert(JSON.stringify(response))
+                    this.setState({
+                        message: response.message
+                    })
                 }
             })
-            .catch((err) => alert("error" + err))
+            .catch((err) => alert("error login" + err))
 
     }
     dashboard = () => {
@@ -50,21 +55,28 @@ class Login extends Component {
                 'x-auth-token': localStorage.getItem('token')
             }
         })
-            // .then((response)=>response.json())
             .then((response) => {
-                this.props.history.push('/dashBoard')
+                if (response.ok) { this.props.history.push('/dashBoard') } 
             })
             .catch((err) => alert("error" + err))
     }
     render() {
+        // if (this.props.isLoggedIn) return <Redirect to='/dashboard' />
         return (
             <div className='container'>
                 <div className='row'>
-                    <div className='col s6 push-s3 card ' style={{padding:'10px',marginTop:'100px'}}>
+                    <div className='col s12 m6  push-m3 card' style={{ padding: '10px', marginTop: '100px' }}>
+                        {
+                            this.state.message ?
+                                <div className="red-text center">
+                                    {this.state.message}
+                                </div>
+                                : null
+                        }
                         <form onSubmit={this.handleLogin}>
-                            <input name='email' type='text' onChange={this.handleChange} placeholder='E-Mail' /><br />
-                            <input name='password' type='password' onChange={this.handleChange} placeholder='Password' /><br />
-                            <input className='waves-effect waves-light btn #263238 blue-grey darken-2 right text-white-text' type='submit' value='Login' />
+                            <TextInput name='email' email validate xl={12} onChange={this.handleChange} label='E-Mail' />
+                            <TextInput name='password' type='password' xl={12} onChange={this.handleChange} label='Password'/>
+                            <TextInput className='btn #263238 blue-grey darken-2 right' type='submit' value='Login' />
                         </form>
                     </div>
                 </div>
