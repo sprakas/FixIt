@@ -5,6 +5,7 @@ import Login from './pages/login'
 import Register from './pages/register'
 import DashBoard from './pages/dashBoard'
 import NotFound from './pages/notFound'
+import CreateProject from './pages/createProject'
 
 export default class App extends Component {
     render() {
@@ -12,9 +13,10 @@ export default class App extends Component {
             <HashRouter>
                 <Header/>
                 <Switch>
-                    <Route path='/' exact component = { Login }/>
+                    <Route path='/' exact component = { DashBoard }/>
                     <Route path = '/register' component = { Register } />
                     <Route path = '/dashBoard' component = { DashBoard } />
+                    <Route path = '/createProject' component = { CreateProject } />
                     <Route component={ NotFound }/>
                 </Switch>
             </HashRouter>

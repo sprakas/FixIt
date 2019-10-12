@@ -1,14 +1,21 @@
 const express = require('express')
 const router = express.Router()
 const auth = require('../utils/authenticate')
-const userController = require('../controllers/userController')
+const Projects = require('../controllers/projectsController')
 
-router.get('/dashboard',auth,(req,res)=> {
-  res.send("success")
+router.post('/createProject',auth,async (req,res)=> {
+    try {
+        let data = await Projects.createProject(req)
+        console.log('data',data)
+        res.send(data)
+      }
+      catch (err) {
+        throw new Error('Error')
+      }
 })
-router.get("/users", auth, async (req, res) => {
+router.get("/projects", auth, async (req, res) => {
   try {
-    let data = await userController.getUsers()
+    let data = await Projects.getProjects(req)
     console.log('data',data)
     res.send(data)
   }

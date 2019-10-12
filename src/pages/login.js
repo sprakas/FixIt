@@ -35,6 +35,7 @@ class Login extends Component {
                         userData: {}
                     })
                     localStorage.setItem('token', response.token)
+                    localStorage.setItem('userId',response._id)
                     this.props.userLogin()
                     this.dashboard()
                 }
@@ -61,7 +62,7 @@ class Login extends Component {
             .catch((err) => alert("error" + err))
     }
     render() {
-        // if (this.props.isLoggedIn) return <Redirect to='/dashboard' />
+        if (this.props.isLoggedIn) return <Redirect to='/dashboard' />
         return (
             <div className='container'>
                 <div className='row'>

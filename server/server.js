@@ -8,6 +8,7 @@ const userRouter = require('./routes/userRoute')
 const jwt = require('jsonwebtoken');
 const User = require('./modals/usersModal')
 const validate = require('./modals/usersModal')
+const projectRouter = require('./routes/projectsRoute')
 // app.use(express.static(path.join(__dirname, 'public')));
 
 
@@ -16,6 +17,7 @@ app.use(cors())
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/',userRouter)
+app.use('/projects/',projectRouter)
 
 
 

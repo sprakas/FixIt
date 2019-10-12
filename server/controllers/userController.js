@@ -46,7 +46,6 @@ const register = async (req) => {
             name: req.body.name,
             password: req.body.password,
             email: req.body.email,
-            isAdmin: req.body.isAdmin
         });
         await user.save();
         user.generateAuthToken();
@@ -60,4 +59,14 @@ const register = async (req) => {
         return { message: err }
     }
 }
-module.exports = { login, register };
+const getUsers = async() => {
+    try {
+       let users = await UserModal.User.find({})
+       console.log(users)
+       return { users }
+    }
+    catch (err) {
+        return { message: err }
+    }
+}
+module.exports = { login, register, getUsers };
