@@ -1,5 +1,5 @@
 import React,{Component} from 'react'
-import { HashRouter, Switch, Route } from 'react-router-dom'
+import { HashRouter,BrowserRouter, Switch, Route } from 'react-router-dom'
 import Header from './components/header'
 import Login from './pages/login'
 import Register from './pages/register'
@@ -13,7 +13,7 @@ export default class App extends Component {
             <HashRouter>
                 <Header/>
                 <Switch>
-                    <Route path='/' exact component = { DashBoard }/>
+                    <Route path='/' exact component = { Login }/>
                     <Route path = '/register' component = { Register } />
                     <Route path = '/dashBoard' component = { DashBoard } />
                     <Route path = '/createProject' component = { CreateProject } />

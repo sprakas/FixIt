@@ -2,19 +2,20 @@ import React,{Component} from 'react'
 import { NavItem, Navbar} from 'react-materialize';
 import { connect } from 'react-redux'
 import {  userLogin, userLogout } from '../actions/authAction'
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 
 class Header extends Component {
     logOut = () => {
         localStorage.removeItem('token')
         this.props.userLogout()
+        this.props.history.push('/')
     }
     render() {
             return (
                 <Navbar brand={<Link to='/' style={{ paddingLeft: 40 }} className ='flow-text'>Fixit</Link>} className="#263238 blue-grey darken-2 black-text" alignLinks="right" sidenav={<li />}>
                     <NavItem>Getting started</NavItem>
                     <NavItem>About</NavItem>
-                    {this.props.isLoggedIn  ? <NavItem onClick = {()=>this.logOut()}>Logout</NavItem> :
+                    {localStorage.getItem('token')  ? <NavItem onClick = {()=>this.logOut()}>Logout</NavItem> :
                         <Link to='/register'>Register</Link>
                     }
                 </Navbar>
@@ -33,4 +34,4 @@ const mapDispatchToProps = (dispatch) => {
         userLogout : () => dispatch(userLogout())
     }
 }
-export default connect(mapStateToProps,mapDispatchToProps)(Header);
+export default connect(mapStateToProps,mapDispatchToProps)(withRouter(Header));

@@ -43,10 +43,10 @@ class DashBoard extends Component {
         </Col>
     }
     render() {
-        // if (!this.props.isLoggedIn) {
-        //     this.props.userLogout()
-        //     return <Redirect to='/' />
-        // }
+        if (!localStorage.getItem('token')) {
+            this.props.userLogout()
+            return <Redirect to='/' />
+        }
         return (
             <div className='container' style={{ marginTop: '100px' }}>
                 <Row>
