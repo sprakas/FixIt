@@ -6,7 +6,7 @@ const Projects = require('../controllers/projectsController')
 router.post('/createProject',auth,async (req,res)=> {
     try {
         let data = await Projects.createProject(req)
-        console.log('data',data)
+        // console.log('data',data)
         res.send(data)
       }
       catch (err) {
@@ -16,7 +16,7 @@ router.post('/createProject',auth,async (req,res)=> {
 router.get("/projects", auth, async (req, res) => {
   try {
     let data = await Projects.getProjects(req)
-    console.log('data',data)
+    // console.log('data',data)
     res.send(data)
   }
   catch (err) {
@@ -26,7 +26,7 @@ router.get("/projects", auth, async (req, res) => {
 router.post("/login", async (req, res) => {
   try {
     let data = await userController.login(req)
-    console.log('data',data)
+    // console.log('data',data)
     res.send(data);
   }
   catch (err) {
